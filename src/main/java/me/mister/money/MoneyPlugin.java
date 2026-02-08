@@ -8,6 +8,7 @@ import me.mister.money.managers.BankManager;
 import me.mister.money.managers.InterestTask;
 import me.mister.money.managers.LogManager;
 import me.mister.money.managers.MoneyManager;
+import me.mister.money.gui.BankGUIListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class MoneyPlugin extends JavaPlugin {
