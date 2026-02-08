@@ -1,4 +1,4 @@
-package me.mister.money.listeners;
+package me.mister.money.gui;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
