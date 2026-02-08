@@ -1,0 +1,16 @@
+name: MoneyPlugin
+main: me.mister.money.MoneyPlugin
+version: 1.0
+api-version: 1.21
+author: Mister
+
+commands:
+  money:
+    description: Voir votre argent
+    usage: /money
+  pay:
+    description: Payer un joueur
+    usage: /pay <joueur> <montant>
+  bank:
+    description: Ouvrir la banque
+    usage: /bank
