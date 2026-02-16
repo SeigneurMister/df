@@ -16,17 +16,24 @@ public class MoneyManager {
 
     public MoneyManager(MoneyPlugin plugin) {
         this.plugin = plugin;
-        load();
+        this.file = new File(plugin.getDataFolder(), "money.yml");
+        this.config = YamlConfiguration.loadConfiguration(file);
     }
 
-    private void load() {
-        file = new File(plugin.getDataFolder(), "money.yml");
-        if (!file.exists()) plugin.saveResource("money.yml", false);
+    public void load() {
+        if (!file.exists()) {
+            plugin.saveResource("money.yml", false);
+        }
         config = YamlConfiguration.loadConfiguration(file);
     }
 
     public void save() {
-        try { config.save(file); } catch (IOException e) { e.printStackTrace(); }
+        try {
+            config.save(file);
+        } catch (IOException e) {
+            plugin.getLogger().severe("Impossible de sauvegarder money.yml");
+            e.printStackTrace();
+        }
     }
 
     public double get(UUID uuid) {

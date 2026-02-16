@@ -1,54 +1,56 @@
 package me.mister.money;
 
 import me.mister.money.api.MoneyAPI;
-import me.mister.money.commands.BankCommand;
-import me.mister.money.commands.MoneyCommand;
-import me.mister.money.commands.PayCommand;
-import me.mister.money.managers.BankManager;
-import me.mister.money.managers.InterestTask;
-import me.mister.money.managers.LogManager;
-import me.mister.money.managers.MoneyManager;
-import me.mister.money.gui.BankGUIListener;
+import me.mister.money.commands.*;
+import me.mister.money.managers.*;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class MoneyPlugin extends JavaPlugin {
 
-    private static MoneyPlugin instance;
-
     private MoneyManager moneyManager;
     private BankManager bankManager;
     private LogManager logManager;
-    private MoneyAPI api;
+    private InterestTask interestTask;
 
     @Override
     public void onEnable() {
-        instance = this;
+        saveDefaultConfigFiles();
 
-        moneyManager = new MoneyManager(this);
-        bankManager = new BankManager(this);
-        logManager = new LogManager(this);
-        api = new MoneyAPI(this);
+        this.moneyManager = new MoneyManager(this);
+        this.bankManager = new BankManager(this);
+        this.logManager = new LogManager(this);
+
+        this.moneyManager.load();
+        this.bankManager.load();
+        this.logManager.load();
+
+        this.interestTask = new InterestTask(this);
+        this.interestTask.start();
+
+        MoneyAPI.init(this);
 
         getCommand("money").setExecutor(new MoneyCommand(this));
         getCommand("pay").setExecutor(new PayCommand(this));
         getCommand("bank").setExecutor(new BankCommand(this));
-        getServer().getPluginManager().registerEvents(new BankGUIListener(), this);
+        getCommand("moneyadmin").setExecutor(new MoneyAdminCommand(this));
+        getCommand("moneyhelp").setExecutor(new MoneyHelpCommand());
 
-
-        new InterestTask(this).runTaskTimer(this, 20L, 20L * 60 * 60 * 24 * 2); // Tous les 2 jours
-
-        getLogger().info("MoneyPlugin activé !");
+        getLogger().info("MoneyPlugin activé.");
     }
 
     @Override
     public void onDisable() {
-        moneyManager.save();
-        bankManager.save();
-        logManager.save();
+        if (interestTask != null) interestTask.stop();
+        if (moneyManager != null) moneyManager.save();
+        if (bankManager != null) bankManager.save();
+        if (logManager != null) logManager.save();
+        getLogger().info("MoneyPlugin désactivé.");
     }
 
-    public static MoneyPlugin getInstance() {
-        return instance;
+    private void saveDefaultConfigFiles() {
+        saveResource("money.yml", false);
+        saveResource("bank.yml", false);
+        saveResource("logs.yml", false);
     }
 
     public MoneyManager getMoneyManager() {
@@ -61,9 +63,5 @@ public class MoneyPlugin extends JavaPlugin {
 
     public LogManager getLogManager() {
         return logManager;
-    }
-
-    public MoneyAPI getAPI() {
-        return api;
     }
 }

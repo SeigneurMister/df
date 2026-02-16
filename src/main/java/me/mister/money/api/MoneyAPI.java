@@ -6,21 +6,25 @@ import java.util.UUID;
 
 public class MoneyAPI {
 
-    private final MoneyPlugin plugin;
+    private static MoneyPlugin plugin;
 
-    public MoneyAPI(MoneyPlugin plugin) {
-        this.plugin = plugin;
+    public static void init(MoneyPlugin pl) {
+        plugin = pl;
     }
 
-    public void addMoney(UUID uuid, double amount) {
+    public static double getMoney(UUID uuid) {
+        return plugin.getMoneyManager().get(uuid);
+    }
+
+    public static void addMoney(UUID uuid, double amount) {
         plugin.getMoneyManager().add(uuid, amount);
     }
 
-    public void removeMoney(UUID uuid, double amount) {
+    public static void removeMoney(UUID uuid, double amount) {
         plugin.getMoneyManager().remove(uuid, amount);
     }
 
-    public double getMoney(UUID uuid) {
-        return plugin.getMoneyManager().get(uuid);
+    public static void setMoney(UUID uuid, double amount) {
+        plugin.getMoneyManager().set(uuid, amount);
     }
 }

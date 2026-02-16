@@ -12,5 +12,11 @@ commands:
     description: Payer un joueur
     usage: /pay <joueur> <montant>
   bank:
-    description: Ouvrir la banque
+    description: Banque du joueur
     usage: /bank
+  moneyadmin:
+    description: Commandes admin d'argent
+    usage: /moneyadmin <set|add|remove|log> ...
+  moneyhelp:
+    description: Aide du plugin Money
+    usage: /moneyhelp

@@ -16,29 +16,32 @@ public class BankManager {
 
     public BankManager(MoneyPlugin plugin) {
         this.plugin = plugin;
-        load();
+        this.file = new File(plugin.getDataFolder(), "bank.yml");
+        this.config = YamlConfiguration.loadConfiguration(file);
     }
 
-    private void load() {
-        file = new File(plugin.getDataFolder(), "bank.yml");
-        if (!file.exists()) plugin.saveResource("bank.yml", false);
+    public void load() {
+        if (!file.exists()) {
+            plugin.saveResource("bank.yml", false);
+        }
         config = YamlConfiguration.loadConfiguration(file);
     }
 
     public void save() {
-        try { config.save(file); } catch (IOException e) { e.printStackTrace(); }
-    }
-
-    public FileConfiguration getConfig() {
-        return config;
+        try {
+            config.save(file);
+        } catch (IOException e) {
+            plugin.getLogger().severe("Impossible de sauvegarder bank.yml");
+            e.printStackTrace();
+        }
     }
 
     public double get(UUID uuid) {
-        return config.getDouble(uuid + ".amount", 0.0);
+        return config.getDouble("balances." + uuid, 0.0);
     }
 
     public void set(UUID uuid, double amount) {
-        config.set(uuid + ".amount", amount);
+        config.set("balances." + uuid, amount);
         save();
     }
 
@@ -50,18 +53,12 @@ public class BankManager {
         set(uuid, Math.max(0, get(uuid) - amount));
     }
 
-    // TIMER
-    public long getNextInterest(UUID uuid) {
-        return config.getLong(uuid + ".nextInterest", System.currentTimeMillis());
+    public long getLastInterest(UUID uuid) {
+        return config.getLong("interest." + uuid, 0L);
     }
 
-    public void setNextInterest(UUID uuid, long time) {
-        config.set(uuid + ".nextInterest", time);
+    public void setLastInterest(UUID uuid, long time) {
+        config.set("interest." + uuid, time);
         save();
-    }
-
-    public void resetInterestTimer(UUID uuid) {
-        long next = System.currentTimeMillis() + (1000L * 60 * 60 * 48); // 48h
-        setNextInterest(uuid, next);
     }
 }
