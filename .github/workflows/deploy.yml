@@ -24,9 +24,9 @@ jobs:
       - name: Upload plugin via SFTP
         uses: wlixcc/SFTP-Deploy-Action@v1.2.4
         with:
-          server: ${{ secrets.7020.mystrator.com }}
+          server: ${{ secrets.SFTP_HOST }}
           port: 22
-          username: ${{ secrets.seigneurpanda_.67bff18f }}
-          password: ${{ secrets.3983Thu539Dec-MSR }}
+          username: ${{ secrets.SFTP_USER }}
+          password: ${{ secrets.SFTP_PASS }}
           local_path: "target/*.jar"
           remote_path: "/plugins/"
