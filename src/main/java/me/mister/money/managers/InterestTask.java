@@ -48,7 +48,8 @@ public class InterestTask {
                     plugin.getBankManager().deposit(uuid, interest);
                     plugin.getBankManager().setLastInterest(uuid, now);
 
-                    player.sendMessage("§aVos intérêts bancaires ont été appliqués : §e" + interest + "€");
+                    String formatted = String.format("%.2f", interest);
+                    player.sendMessage("§aVos intérêts bancaires ont été appliqués : §e" + formated + "€");
                 }
             }
 
