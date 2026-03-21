@@ -12,8 +12,8 @@ public class InterestTask {
     private final MoneyPlugin plugin;
     private BukkitTask task;
 
-    // 1 minute en ms
-    private static final long INTERVAL_MS = 30L * 1000L;
+    // 1 minute en m
+    private static final long INTERVAL_MS = 10L * 1000L;
     private static final double RATE = 0.0175; // 1.75%
 
     public InterestTask(MoneyPlugin plugin) {
