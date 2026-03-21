@@ -12,7 +12,7 @@ public class InterestTask {
     private final MoneyPlugin plugin;
     private BukkitTask task;
 
-    // 1 minute en m
+    // 1 minute en ms (50 secondes dans ton cas)
     private static final long INTERVAL_MS = 50L * 1000L;
     private static final double RATE = 0.0175; // 1.75%
 
@@ -49,5 +49,20 @@ public class InterestTask {
 
     public void stop() {
         if (task != null) task.cancel();
+    }
+
+    /**
+     * Retourne le temps restant avant les prochains intérêts pour un joueur.
+     * @param uuid UUID du joueur
+     * @return temps restant en millisecondes
+     */
+    public long getTimeRemaining(UUID uuid) {
+        long last = plugin.getBankManager().getLastInterest(uuid);
+        long now = System.currentTimeMillis();
+
+        long elapsed = now - last;
+        long remaining = INTERVAL_MS - elapsed;
+
+        return Math.max(remaining, 0);
     }
 }

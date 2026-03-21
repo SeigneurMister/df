@@ -34,6 +34,8 @@ public class MoneyPlugin extends JavaPlugin {
         getCommand("bank").setExecutor(new BankCommand(this));
         getCommand("moneyadmin").setExecutor(new MoneyAdminCommand(this));
         getCommand("moneyhelp").setExecutor(new MoneyHelpCommand());
+        getCommand("bankinteret").setExecutor(new BankInteretCommand(interestTask));
+
 
         getLogger().info("MoneyPlugin activé.");
     }

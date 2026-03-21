@@ -20,3 +20,7 @@ commands:
   moneyhelp:
     description: Aide du plugin Money
     usage: /moneyhelp
+  bankinteret:
+    description: Affiche le temps restant avant les intérêts
+    usage: /bankinteret
+
