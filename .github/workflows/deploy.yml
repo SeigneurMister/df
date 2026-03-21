@@ -1,0 +1,32 @@
+name: Build and Deploy Plugin (SFTP)
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Build with Maven
+        run: mvn clean package
+
+      - name: Upload plugin via SFTP
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+        with:
+          server: ${{ secrets.7020.mystrator.com }}
+          port: 22
+          username: ${{ secrets.seigneurpanda_.67bff18f }}
+          password: ${{ secrets.3983Thu539Dec-MSR }}
+          local_path: "target/*.jar"
+          remote_path: "/plugins/"
