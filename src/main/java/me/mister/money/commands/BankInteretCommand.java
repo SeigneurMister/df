@@ -26,11 +26,6 @@ public class BankInteretCommand implements CommandExecutor {
 
         long remaining = interestTask.getTimeRemaining(player.getUniqueId());
 
-        if (remaining <= 0) {
-            player.sendMessage("§aVos intérêts peuvent être appliqués à tout moment.");
-            return true;
-        }
-
         long seconds = remaining / 1000;
         long minutes = seconds / 60;
         long sec = seconds % 60;
